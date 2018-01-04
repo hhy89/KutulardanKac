@@ -1,15 +1,15 @@
 package com.hhy.game.dodgebox;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import java.util.ArrayList;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsActivity extends Activity implements View.OnClickListener {
     // imagebuttons & lists
     private ArrayList<ImageButton> backgrounds = new ArrayList<>();
     private ArrayList<ImageButton> characters = new ArrayList<>();
@@ -88,7 +88,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
             // backbutton
             case R.id.backButton:
-                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                Intent intent = new Intent(this, MenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             default:
@@ -115,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     // save background
     private void saveBackground(int id) {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("dodgebox", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("dodgebox", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("background", id);
         editor.apply();
@@ -123,13 +124,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     // load last chosen background
     private int loadBackground() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("dodgebox", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("dodgebox", MODE_PRIVATE);
         return sharedPreferences.getInt("background", 0);
     }
 
     // save character
     private void saveCharacter(int id) {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("dodgebox", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("dodgebox", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("character", id);
         editor.apply();
@@ -137,14 +138,15 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     // load last chosen character
     private int loadCharacter() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("dodgebox", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("dodgebox", MODE_PRIVATE);
         return sharedPreferences.getInt("character", 0);
     }
 
     @Override
     // on back pressed
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }

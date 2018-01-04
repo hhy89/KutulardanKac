@@ -1,15 +1,15 @@
 package com.hhy.game.dodgebox;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MenuActivity extends AppCompatActivity {
 
         // record text
         TextView recordText = findViewById(R.id.recordText);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("dodgebox", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("dodgebox", MODE_PRIVATE);
         int recordScore = sharedPreferences.getInt("record_key", 0);
         recordText.setText(String.valueOf(recordScore));
 
@@ -30,7 +30,8 @@ public class MenuActivity extends AppCompatActivity {
         playGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -40,7 +41,8 @@ public class MenuActivity extends AppCompatActivity {
         howTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(getApplicationContext(), HowToPlayActivity.class);
+                Intent intent = new Intent(MenuActivity.this, HowToPlayActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -50,7 +52,8 @@ public class MenuActivity extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
