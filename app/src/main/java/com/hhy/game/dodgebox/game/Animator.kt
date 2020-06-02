@@ -2,7 +2,6 @@ package com.hhy.game.dodgebox.game
 
 import android.graphics.Bitmap
 import android.graphics.Rect
-import java.util.*
 
 internal class Animator(private val player: Player, private val bitmapWithFrames: Bitmap, numberOfFramesHorizontally: Int,
                         numberOfFramesVertically: Int, private val updateTimeMillis: Int,
@@ -31,11 +30,8 @@ internal class Animator(private val player: Player, private val bitmapWithFrames
         isRunning = false
         var flag = true
         while (flag) {
-            try {
-                animatorThread.join()
-                flag = false
-            } catch (ignored: InterruptedException) {
-            }
+            animatorThread.join()
+            flag = false
         }
     }
 
@@ -63,11 +59,7 @@ internal class Animator(private val player: Player, private val bitmapWithFrames
                         frames[currentFrame].top, frameWidth,
                         frameHeight)
                 player.setBitmap(newBitmap)
-                try {
-                    sleep(updateTimeMillis.toLong())
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
+                sleep(updateTimeMillis.toLong())
             }
         }
     }

@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
 import com.hhy.game.dodgebox.R
-import java.util.*
+import kotlin.random.Random
 
 class Box internal constructor(private val values: Values, resources: Resources) {
     val coordinates: VectorXY
@@ -31,8 +31,7 @@ class Box internal constructor(private val values: Values, resources: Resources)
 
     init {
         // create random
-        val random = Random()
-        val X = random.nextInt(values.width - values.boxWidth)
+        val X = Random.nextInt(values.width - values.boxWidth)
         coordinates = VectorXY(X, 0)
     }
 }

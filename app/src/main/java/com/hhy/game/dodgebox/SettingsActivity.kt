@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
-import java.util.*
 
 class SettingsActivity : Activity(), View.OnClickListener {
     // imagebuttons & lists
