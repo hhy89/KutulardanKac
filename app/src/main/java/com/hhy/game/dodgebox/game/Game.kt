@@ -10,9 +10,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
+import android.hardware.SensorManager
 import android.os.SystemClock.sleep
 import android.view.MotionEvent
 import android.view.SurfaceHolder
+import android.view.WindowManager
 import com.hhy.game.dodgebox.GameOverActivity
 import com.hhy.game.dodgebox.R
 import kotlin.math.roundToInt
@@ -32,14 +34,22 @@ internal class Game(private val context: Context, private val values: Values, pr
     // move character for accelerometer sensor
     fun onSensorChanged(event: SensorEvent) {
         if (gameRunning && event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+
+            // some tablet's sensor value is reverse. because screen is landscape but sensor is portrait
+            // i hope it is simple solution
+            // x value = event.values[0]
             // y value = event.values[1]
+            val rotation: Int = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation
+            val useValue: Float = if (rotation == 0) -event.values[0] else event.values[1]
+
+            // player move
             when {
-                event.values[1] < 0 -> {
+                useValue < 0 -> {
                     player.startAnimation()
                     player.setLeft(true)
                     player.moveLeft()
                 }
-                event.values[1] > 0 -> {
+                useValue > 0 -> {
                     player.startAnimation()
                     player.setLeft(false)
                     player.moveRight()
@@ -145,7 +155,7 @@ internal class Game(private val context: Context, private val values: Values, pr
         pauseButton = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.pause, options),
                 values.pausedButtonWidth, values.pausedButtonHeight, false)
 
-        scoreText = ScoreText(values, resources)
+        scoreText = ScoreText(context, values, resources)
 
         // generate first box
         generateBox()
@@ -245,6 +255,10 @@ internal class Game(private val context: Context, private val values: Values, pr
 
     init {
         options.inScaled = false
+
+        // setup default sensor
+        (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager).getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
         // start the game
         restartGame()
     }

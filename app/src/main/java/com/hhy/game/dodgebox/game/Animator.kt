@@ -28,7 +28,15 @@ internal class Animator(private val player: Player, private val bitmapWithFrames
     // stop animation
     fun stopAnimation() {
         isRunning = false
-        animatorThread.join()
+        var flag = true
+
+        while (flag) {
+            try {
+                animatorThread.join()
+                flag = false
+            } catch (ignored: Exception) {
+            }
+        }
     }
 
     // split sprite image
@@ -55,7 +63,10 @@ internal class Animator(private val player: Player, private val bitmapWithFrames
                         frames[currentFrame].top, frameWidth,
                         frameHeight)
                 player.setBitmap(newBitmap)
-                sleep(updateTimeMillis.toLong())
+                try {
+                    sleep(updateTimeMillis.toLong())
+                } catch (ignored: Exception) {
+                }
             }
         }
     }

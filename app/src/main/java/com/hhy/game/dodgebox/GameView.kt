@@ -12,10 +12,9 @@ import android.view.SurfaceView
 import com.hhy.game.dodgebox.game.Game
 import com.hhy.game.dodgebox.game.Values
 
-
 class GameView(context: Context, attrs: AttributeSet): SurfaceView(context, attrs), SensorEventListener, SurfaceHolder.Callback {
 
-    private lateinit var gameThread: GameThread
+    private var gameThread: GameThread? = null
     private lateinit var game: Game
     private lateinit var sensorManager: SensorManager
 
@@ -23,7 +22,7 @@ class GameView(context: Context, attrs: AttributeSet): SurfaceView(context, attr
         val values = Values(width, height)
         game = Game(context, values, holder, resources)
         gameThread = GameThread(game)
-        gameThread.start()
+        gameThread!!.start()
 
         // set up SensorManager
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -38,9 +37,15 @@ class GameView(context: Context, attrs: AttributeSet): SurfaceView(context, attr
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        gameThread.run {
-            shutdown()
-            join()
+        if (gameThread != null) {
+            gameThread!!.shutdown()
+            while (gameThread != null) {
+                try {
+                    gameThread!!.join()
+                    gameThread = null
+                } catch (ignored: Exception) {
+                }
+            }
         }
     }
 
