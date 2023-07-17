@@ -1,6 +1,6 @@
 Privacy Policy
 =======
-Effective date: June 03, 2020
+Effective date: July 17, 2023
 
 Kutulardan Kaç ("us", "we", or "our") operates the Kutulardan Kaç mobile application (hereinafter referred to as the "Service").
 
